@@ -1,0 +1,6 @@
+{
+  "name": "황산솔 포트폴리오 | Hwang Sansol Portfolio",
+  "description": "디자인 감각과 데이터 기반 마케팅을 융합하는 크리에이터 황산솔의 하이엔드 포트폴리오 및 실시간 CMS 관리 시스템",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

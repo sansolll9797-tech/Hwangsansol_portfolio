@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+:root {
+  --accent-color: #00FF66;
+  --accent-glow: rgba(0, 255, 102, 0.35);
+  --accent-subtle: rgba(0, 255, 102, 0.12);
+  --bg-base: #050505;
+  --bg-card: #0d0d0f;
+  --bg-card-hover: #141417;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+}
+
+*, ::before, ::after {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: #f1f5f9;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #08080a;
+}
+::-webkit-scrollbar-thumb {
+  background: #232328;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* Cyber grid background utility */
+.cyber-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.glow-effect {
+  box-shadow: 0 0 25px -5px var(--accent-glow);
+}
+
+.glow-text {
+  text-shadow: 0 0 15px var(--accent-glow);
+}
+
+.glow-border {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
