@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Sliders, Menu, X, Sparkles, ArrowUpRight } from 'lucide-react';
+import { Menu, X, Sparkles } from 'lucide-react';
 
 interface NavbarProps {
   onOpenCMS: () => void;
   statusBadge: string;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenCMS, statusBadge }) => {
+export const Navbar: React.FC<NavbarProps> = ({ statusBadge }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -66,27 +66,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCMS, statusBadge }) => {
             ))}
           </nav>
 
-          {/* Admin CMS Trigger & Actions */}
           <div className="flex items-center gap-3">
-            <button
-              onClick={onOpenCMS}
-              className="relative group flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#111115] border border-white/15 text-xs sm:text-sm font-medium text-white hover:border-[var(--accent-color)] transition-all duration-200 shadow-lg cursor-pointer"
-              style={{
-                boxShadow: '0 0 15px -3px var(--accent-subtle)'
-              }}
-              aria-label="관리자 CMS 대시보드 열기"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ backgroundColor: 'var(--accent-color)' }}></span>
-                <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: 'var(--accent-color)' }}></span>
-              </span>
-              <Sliders className="w-3.5 h-3.5" style={{ color: 'var(--accent-color)' }} />
-              <span className="font-semibold">관리자 CMS</span>
-              <span className="hidden lg:inline text-[11px] text-slate-400 border-l border-white/10 pl-2">
-                실시간 편집
-              </span>
-            </button>
-
             {/* Mobile Hamburger Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -117,17 +97,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCMS, statusBadge }) => {
                   <Sparkles className="w-3.5 h-3.5" style={{ color: 'var(--accent-color)' }} />
                   <span>{statusBadge}</span>
                 </div>
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    onOpenCMS();
-                  }}
-                  className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-white"
-                  style={{ borderColor: 'var(--accent-color)' }}
-                >
-                  <Sliders className="w-3.5 h-3.5" style={{ color: 'var(--accent-color)' }} />
-                  관리자 대시보드 (CMS) 열기
-                </button>
               </div>
             </div>
           </div>
