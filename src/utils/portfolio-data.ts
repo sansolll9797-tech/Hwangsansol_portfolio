@@ -21,7 +21,7 @@ export const DEFAULT_PROFILE: ProfileInfo = {
     { date: '2020.10', title: '컴퓨터그래픽스운용기능사' },
     { date: '2022.02', title: 'GTQ 포토샵 1급' },
     { date: '2018.09', title: '전산응용건축제도기능사' },
-    { date: '2026.09', title: 'GA4' }
+    { date: '2026.09', title: 'GA4(Google Analytics Certification)' }
   ],
   skills: ['Photoshop', 'Illustrator', 'Naver Blog SEO', 'Instagram Marketing', 'Content Planning']
 };
