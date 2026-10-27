@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ statusBadge }) => {
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8" aria-label="메인 내비게이션">
+          <nav className="hidden md:flex items-center gap-8 relative -left-[144px]" aria-label="메인 내비게이션">
             {navLinks.map((link) => (
               <a
                 key={link.href}
