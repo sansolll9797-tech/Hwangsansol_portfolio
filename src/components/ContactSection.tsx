@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, ArrowUp, Send } from 'lucide-react';
+import { Mail, ArrowUp } from 'lucide-react';
 import { SocialLinks } from '../types/portfolio';
 
 interface ContactSectionProps {
@@ -63,14 +63,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
               </button>
             </div>
 
-            <a
-              href={`mailto:${socials.email}`}
-              className="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-black transition-all hover:brightness-110 cursor-pointer flex items-center gap-1.5"
-              style={{ backgroundColor: 'var(--accent-color)' }}
-            >
-              <Send className="w-3.5 h-3.5" />
-              <span>메일 쓰기</span>
-            </a>
+
           </div>
         </div>
 
