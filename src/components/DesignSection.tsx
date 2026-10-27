@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Sparkles, Plus, ArrowUpRight, Palette, Play, Film } from 'lucide-react';
+import { Search, Sparkles, ArrowUpRight, Play, Film } from 'lucide-react';
 import { Project } from '../types/portfolio';
 import { filterProjects } from '../utils/portfolio-data';
 
@@ -12,7 +12,6 @@ interface DesignSectionProps {
 export const DesignSection: React.FC<DesignSectionProps> = ({
   designProjects,
   onSelectProject,
-  onOpenCMSForNewProject,
 }) => {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -51,15 +50,7 @@ export const DesignSection: React.FC<DesignSectionProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            <button
-              onClick={onOpenCMSForNewProject}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs sm:text-sm font-semibold text-slate-200 hover:text-white hover:border-purple-400 transition-colors cursor-pointer"
-            >
-              <Plus className="w-4 h-4 text-purple-400" />
-              <span>새 디자인 추가 (CMS)</span>
-            </button>
-          </div>
+        </div>
         </div>
 
         {/* Filter Bar & Search */}
