@@ -33,7 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({ statusBadge }) => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
+        <div className="relative flex items-center justify-between">
           {/* Logo & Identity */}
           <a
             href="#"
@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ statusBadge }) => {
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8 relative -left-[144px]" aria-label="메인 내비게이션">
+          <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2" aria-label="메인 내비게이션">
             {navLinks.map((link) => (
               <a
                 key={link.href}
