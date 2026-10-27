@@ -12,6 +12,7 @@ interface DesignSectionProps {
 export const DesignSection: React.FC<DesignSectionProps> = ({
   designProjects,
   onSelectProject,
+  onOpenCMSForNewProject,
 }) => {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -50,7 +51,6 @@ export const DesignSection: React.FC<DesignSectionProps> = ({
             </p>
           </div>
 
-        </div>
         </div>
 
         {/* Filter Bar & Search */}
