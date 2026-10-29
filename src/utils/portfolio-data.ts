@@ -106,7 +106,7 @@ export const DEFAULT_DESIGN_PROJECTS: Project[] = [
     title: 'FRANK WAVE — 커피바 브랜드 아이덴티티 & 굿즈 디자인',
     subtitle: "커피와 술을 함께 즐기는 매력적인 공간 '꾸밈없는 파도'의 캐주얼 브랜딩 및 패키지 시스템",
     category: 'brand',
-    categoryLabel: '브랜드 디자인 (Brand Design)',
+    categoryLabel: '가상 브랜드 디자인 (Brand Design)',
     section: 'design',
     thumbnail: '/assets/pdf-pages/page-04.png',
     heroImage: '/assets/pdf-pages/page-04.png',
