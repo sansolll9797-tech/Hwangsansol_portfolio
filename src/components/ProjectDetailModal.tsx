@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { X, ExternalLink, Sparkles, Palette, Layers, Calendar, User, Film, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { X, ExternalLink, Sparkles, Palette, Layers, Calendar, User, Film, ZoomIn, ZoomOut, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Project } from '../types/portfolio';
 import { extractYouTubeId } from '../utils/portfolio-data';
 
@@ -13,15 +13,19 @@ interface ProjectDetailModalProps {
 // Mobile: two-finger pinch + one-finger pan after zooming.
 // Desktop: +/- buttons, mouse wheel, double-click and dragging.
 interface ZoomableImageProps {
-  src: string;
+  images: string[];
+  initialIndex: number;
   alt: string;
+  onImageChange: (image: string) => void;
   onClose: () => void;
 }
 
 type ImageView = { scale: number; x: number; y: number };
 type TouchSnapshot = { count: number; x: number; y: number; distance: number };
 
-const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt, onClose }) => {
+const ZoomableImage: React.FC<ZoomableImageProps> = ({ images, initialIndex, alt, onImageChange, onClose }) => {
+  const [imageIndex, setImageIndex] = useState(initialIndex);
+  const swipeStartRef = useRef<{ x: number; y: number } | null>(null);
   const initialView = useRef<ImageView>({
     scale: 1,
     x: 0,
@@ -39,6 +43,31 @@ const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt, onClose }) => {
   };
 
   const resetZoom = () => updateView({ scale: 1, x: 0, y: 0 });
+
+  // Moving between gallery images resets zoom so the next design is fully visible.
+  const showImage = (nextIndex: number) => {
+    if (nextIndex < 0 || nextIndex >= images.length || nextIndex === imageIndex) return;
+    setImageIndex(nextIndex);
+    onImageChange(images[nextIndex]);
+    resetZoom();
+    touchRef.current = null;
+    dragRef.current = null;
+    swipeStartRef.current = null;
+  };
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft' && imageIndex > 0) {
+        event.preventDefault();
+        showImage(imageIndex - 1);
+      } else if (event.key === 'ArrowRight' && imageIndex < images.length - 1) {
+        event.preventDefault();
+        showImage(imageIndex + 1);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [imageIndex, images]);
 
   const zoomAt = (targetScale: number, clientX?: number, clientY?: number) => {
     const prev = viewRef.current;
@@ -74,11 +103,16 @@ const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt, onClose }) => {
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     if (event.touches.length) touchRef.current = touchSnapshot(event.touches);
+    // At 100% zoom, a horizontal swipe navigates gallery pages.
+    swipeStartRef.current = event.touches.length === 1 && viewRef.current.scale <= 1.01
+      ? { x: event.touches[0].clientX, y: event.touches[0].clientY }
+      : null;
   };
 
   const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
     if (!event.touches.length) return;
     const current = touchSnapshot(event.touches);
+    if (event.touches.length > 1) swipeStartRef.current = null;
     const previous = touchRef.current;
     const currentView = viewRef.current;
     if (previous && previous.count === current.count) {
@@ -110,6 +144,17 @@ const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt, onClose }) => {
   };
 
   const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length === 0 && swipeStartRef.current && viewRef.current.scale <= 1.01) {
+      const finalTouch = event.changedTouches[0];
+      if (finalTouch) {
+        const dx = finalTouch.clientX - swipeStartRef.current.x;
+        const dy = finalTouch.clientY - swipeStartRef.current.y;
+        if (Math.abs(dx) >= 60 && Math.abs(dx) > Math.abs(dy) * 1.25) {
+          showImage(imageIndex + (dx < 0 ? 1 : -1));
+        }
+      }
+    }
+    swipeStartRef.current = null;
     touchRef.current = event.touches.length ? touchSnapshot(event.touches) : null;
   };
 
@@ -135,7 +180,7 @@ const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt, onClose }) => {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
-        onTouchCancel={() => { touchRef.current = null; }}
+        onTouchCancel={() => { touchRef.current = null; swipeStartRef.current = null; }}
         onMouseDown={(event) => { if (viewRef.current.scale > 1) { dragRef.current = { x: event.clientX, y: event.clientY }; event.preventDefault(); } }}
         onMouseMove={(event) => {
           if (!dragRef.current) return;
@@ -149,15 +194,28 @@ const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt, onClose }) => {
         onWheel={(event) => { zoomAt(viewRef.current.scale * (event.deltaY < 0 ? 1.12 : 1 / 1.12), event.clientX, event.clientY); }}
       >
         <img
-          src={src}
-          alt={alt}
+          src={images[imageIndex]}
+          alt={`${alt} (${imageIndex + 1}/${images.length})`}
           draggable={false}
           className="w-full h-full object-contain pointer-events-none select-none"
           style={{ transform: `translate3d(${view.x}px, ${view.y}px, 0) scale(${view.scale})`, transformOrigin: 'center center' }}
         />
       </div>
-      <div className="shrink-0 text-center text-xs text-slate-400 px-4 py-3 border-t border-white/10" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
-        두 손가락으로 확대·축소하고, 확대 후 손가락으로 움직여 자세히 볼 수 있어요.
+      <div className="shrink-0 flex flex-col items-center gap-2 px-4 py-3 border-t border-white/10" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
+        {images.length > 1 && (
+          <div className="flex items-center justify-center gap-5">
+            <button type="button" onClick={() => showImage(imageIndex - 1)} disabled={imageIndex === 0} aria-label="이전 이미지" className="p-2.5 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-25 disabled:cursor-not-allowed">
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <span className="min-w-16 text-center text-sm font-mono text-white tabular-nums">{imageIndex + 1} / {images.length}</span>
+            <button type="button" onClick={() => showImage(imageIndex + 1)} disabled={imageIndex === images.length - 1} aria-label="다음 이미지" className="p-2.5 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-25 disabled:cursor-not-allowed">
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        )}
+        <p className="text-center text-xs text-slate-400">
+          {images.length > 1 ? '100%에서는 좌우로 밀어 다음 이미지를 볼 수 있어요. 확대 후에는 이미지를 움직일 수 있어요.' : '두 손가락으로 확대·축소하고, 확대 후 손가락으로 움직여 자세히 볼 수 있어요.'}
+        </p>
       </div>
     </div>,
     document.body
@@ -433,8 +491,10 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
     </div>
     {zoomOpen && !ytId && project.section === 'design' && (
       <ZoomableImage
-        src={activeImage || project.heroImage || project.thumbnail}
+        images={allImages}
+        initialIndex={Math.max(0, allImages.indexOf(activeImage || project.heroImage || project.thumbnail))}
         alt={project.title}
+        onImageChange={setActiveImage}
         onClose={() => setZoomOpen(false)}
       />
     )}
