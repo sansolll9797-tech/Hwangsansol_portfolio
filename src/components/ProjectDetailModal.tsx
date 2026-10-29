@@ -23,7 +23,7 @@ type TouchSnapshot = { count: number; x: number; y: number; distance: number };
 
 const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt, onClose }) => {
   const initialView = useRef<ImageView>({
-    scale: typeof window !== 'undefined' && window.innerWidth < 640 ? 1.6 : 1,
+    scale: 1,
     x: 0,
     y: 0,
   });
