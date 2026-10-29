@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { X, ExternalLink, Sparkles, Palette, Layers, Calendar, User, Film } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { X, ExternalLink, Sparkles, Palette, Layers, Calendar, User, Film, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { Project } from '../types/portfolio';
 import { extractYouTubeId } from '../utils/portfolio-data';
 
@@ -8,23 +9,187 @@ interface ProjectDetailModalProps {
   onClose: () => void;
 }
 
+// Full-screen image viewer. No additional package is required.
+// Mobile: two-finger pinch + one-finger pan after zooming.
+// Desktop: +/- buttons, mouse wheel, double-click and dragging.
+interface ZoomableImageProps {
+  src: string;
+  alt: string;
+  onClose: () => void;
+}
+
+type ImageView = { scale: number; x: number; y: number };
+type TouchSnapshot = { count: number; x: number; y: number; distance: number };
+
+const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt, onClose }) => {
+  const initialView = useRef<ImageView>({
+    scale: typeof window !== 'undefined' && window.innerWidth < 640 ? 1.6 : 1,
+    x: 0,
+    y: 0,
+  });
+  const [view, setView] = useState<ImageView>(initialView.current);
+  const viewRef = useRef<ImageView>(initialView.current);
+  const touchRef = useRef<TouchSnapshot | null>(null);
+  const dragRef = useRef<{ x: number; y: number } | null>(null);
+  const viewerRef = useRef<HTMLDivElement>(null);
+
+  const updateView = (next: ImageView) => {
+    viewRef.current = next;
+    setView(next);
+  };
+
+  const resetZoom = () => updateView({ scale: 1, x: 0, y: 0 });
+
+  const zoomAt = (targetScale: number, clientX?: number, clientY?: number) => {
+    const prev = viewRef.current;
+    const scale = Math.max(1, Math.min(5, targetScale));
+    if (scale === 1) {
+      resetZoom();
+      return;
+    }
+    const rect = viewerRef.current?.getBoundingClientRect();
+    const cx = rect && clientX !== undefined ? clientX - (rect.left + rect.width / 2) : 0;
+    const cy = rect && clientY !== undefined ? clientY - (rect.top + rect.height / 2) : 0;
+    const ratio = scale / prev.scale;
+    updateView({
+      scale,
+      x: cx - (cx - prev.x) * ratio,
+      y: cy - (cy - prev.y) * ratio,
+    });
+  };
+
+  const touchSnapshot = (touches: React.TouchEvent<HTMLDivElement>['touches']): TouchSnapshot => {
+    if (touches.length >= 2) {
+      const a = touches[0];
+      const b = touches[1];
+      return {
+        count: 2,
+        x: (a.clientX + b.clientX) / 2,
+        y: (a.clientY + b.clientY) / 2,
+        distance: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY),
+      };
+    }
+    return { count: 1, x: touches[0].clientX, y: touches[0].clientY, distance: 0 };
+  };
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length) touchRef.current = touchSnapshot(event.touches);
+  };
+
+  const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (!event.touches.length) return;
+    const current = touchSnapshot(event.touches);
+    const previous = touchRef.current;
+    const currentView = viewRef.current;
+    if (previous && previous.count === current.count) {
+      if (current.count === 2 && previous.distance > 0) {
+        const scale = Math.max(1, Math.min(5, currentView.scale * (current.distance / previous.distance)));
+        if (scale <= 1.01) {
+          resetZoom();
+        } else {
+          const ratio = scale / currentView.scale;
+          // Keep the image point beneath the fingers steady during a pinch.
+          const rect = viewerRef.current?.getBoundingClientRect();
+          const originX = rect ? rect.left + rect.width / 2 : 0;
+          const originY = rect ? rect.top + rect.height / 2 : 0;
+          const xOld = previous.x - originX;
+          const yOld = previous.y - originY;
+          const xNew = current.x - originX;
+          const yNew = current.y - originY;
+          updateView({
+            scale,
+            x: xNew - (xOld - currentView.x) * ratio,
+            y: yNew - (yOld - currentView.y) * ratio,
+          });
+        }
+      } else if (current.count === 1 && currentView.scale > 1) {
+        updateView({ ...currentView, x: currentView.x + current.x - previous.x, y: currentView.y + current.y - previous.y });
+      }
+    }
+    touchRef.current = current;
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    touchRef.current = event.touches.length ? touchSnapshot(event.touches) : null;
+  };
+
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] bg-[#050505] text-white flex flex-col" role="dialog" aria-modal="true" aria-label="프로젝트 이미지 확대 보기">
+      <div className="shrink-0 flex items-center justify-between gap-3 px-4 py-3 border-b border-white/15 bg-[#0b0b0f]" style={{ paddingTop: 'max(12px, env(safe-area-inset-top))' }}>
+        <div className="text-xs sm:text-sm text-slate-300 truncate flex items-center gap-2">
+          <ZoomIn className="w-4 h-4 text-[var(--accent-color)] shrink-0" />
+          <span className="truncate">이미지 확대 보기</span>
+        </div>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <button type="button" onClick={() => zoomAt(viewRef.current.scale / 1.5)} aria-label="축소" className="p-2.5 rounded-lg bg-white/10 hover:bg-white/20"><ZoomOut className="w-5 h-5" /></button>
+          <span className="min-w-12 text-center text-xs text-slate-300 tabular-nums">{Math.round(view.scale * 100)}%</span>
+          <button type="button" onClick={() => zoomAt(viewRef.current.scale * 1.5)} aria-label="확대" className="p-2.5 rounded-lg bg-white/10 hover:bg-white/20"><ZoomIn className="w-5 h-5" /></button>
+          <button type="button" onClick={resetZoom} aria-label="확대 초기화" className="p-2.5 rounded-lg bg-white/10 hover:bg-white/20"><RotateCcw className="w-5 h-5" /></button>
+          <button type="button" onClick={onClose} aria-label="이미지 확대 닫기" className="ml-1 p-2.5 rounded-lg bg-white/15 hover:bg-white/25"><X className="w-5 h-5" /></button>
+        </div>
+      </div>
+      <div
+        ref={viewerRef}
+        className="relative flex-1 min-h-0 w-full overflow-hidden flex items-center justify-center select-none"
+        style={{ touchAction: 'none', cursor: view.scale > 1 ? 'grab' : 'zoom-in' }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={() => { touchRef.current = null; }}
+        onMouseDown={(event) => { if (viewRef.current.scale > 1) { dragRef.current = { x: event.clientX, y: event.clientY }; event.preventDefault(); } }}
+        onMouseMove={(event) => {
+          if (!dragRef.current) return;
+          const prev = dragRef.current;
+          dragRef.current = { x: event.clientX, y: event.clientY };
+          updateView({ ...viewRef.current, x: viewRef.current.x + event.clientX - prev.x, y: viewRef.current.y + event.clientY - prev.y });
+        }}
+        onMouseUp={() => { dragRef.current = null; }}
+        onMouseLeave={() => { dragRef.current = null; }}
+        onDoubleClick={(event) => { zoomAt(viewRef.current.scale > 1 ? 1 : 2.5, event.clientX, event.clientY); }}
+        onWheel={(event) => { zoomAt(viewRef.current.scale * (event.deltaY < 0 ? 1.12 : 1 / 1.12), event.clientX, event.clientY); }}
+      >
+        <img
+          src={src}
+          alt={alt}
+          draggable={false}
+          className="w-full h-full object-contain pointer-events-none select-none"
+          style={{ transform: `translate3d(${view.x}px, ${view.y}px, 0) scale(${view.scale})`, transformOrigin: 'center center' }}
+        />
+      </div>
+      <div className="shrink-0 text-center text-xs text-slate-400 px-4 py-3 border-t border-white/10" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
+        두 손가락으로 확대·축소하고, 확대 후 손가락으로 움직여 자세히 볼 수 있어요.
+      </div>
+    </div>,
+    document.body
+  );
+};
+
 export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project, onClose }) => {
   const [activeImage, setActiveImage] = useState<string>('');
+  const [zoomOpen, setZoomOpen] = useState(false);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
     if (project) {
       setActiveImage(project.heroImage || project.thumbnail);
+      setZoomOpen(false);
       document.body.style.overflow = 'hidden';
-      window.addEventListener('keydown', handleKeyDown);
     }
     return () => {
       document.body.style.overflow = '';
-      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [project, onClose]);
+  }, [project]);
+
+  useEffect(() => {
+    if (!project) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        if (zoomOpen) setZoomOpen(false);
+        else onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [project, onClose, zoomOpen]);
 
   if (!project) return null;
 
@@ -35,6 +200,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
     : [project.heroImage || project.thumbnail];
 
   return (
+    <>
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
       onClick={onClose}
@@ -111,6 +277,22 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                   </a>
                 </div>
               </div>
+            ) : project.section === 'design' ? (
+              <button
+                type="button"
+                onClick={() => setZoomOpen(true)}
+                aria-label="이미지 터치하여 전체 화면으로 확대"
+                className="group relative w-full aspect-video sm:aspect-[16/9] rounded-2xl overflow-hidden border border-white/10 bg-black flex items-center justify-center cursor-zoom-in"
+              >
+                <img
+                  src={activeImage || project.heroImage || project.thumbnail}
+                  alt={project.title}
+                  className="w-full h-full object-contain sm:object-cover"
+                />
+                <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-lg bg-black/80 px-3 py-2 text-xs font-semibold text-white border border-white/20 backdrop-blur-sm pointer-events-none">
+                  <ZoomIn className="w-4 h-4 text-[var(--accent-color)]" /> 터치하여 확대
+                </span>
+              </button>
             ) : (
               <div className="relative aspect-video sm:aspect-[16/9] rounded-2xl overflow-hidden border border-white/10 bg-black flex items-center justify-center">
                 <img
@@ -118,7 +300,6 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                   alt={project.title}
                   className="w-full h-full object-contain sm:object-cover"
                 />
-                
               </div>
             )}
 
@@ -250,5 +431,13 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
         </div>
       </div>
     </div>
+    {zoomOpen && !ytId && project.section === 'design' && (
+      <ZoomableImage
+        src={activeImage || project.heroImage || project.thumbnail}
+        alt={project.title}
+        onClose={() => setZoomOpen(false)}
+      />
+    )}
+    </>
   );
 };
