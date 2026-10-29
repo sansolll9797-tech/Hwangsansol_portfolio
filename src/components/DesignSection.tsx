@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Sparkles, ArrowUpRight, Play, Film } from 'lucide-react';
+import { Sparkles, ArrowUpRight, Play, Film } from 'lucide-react';
 import { Project } from '../types/portfolio';
 import { filterProjects } from '../utils/portfolio-data';
 
@@ -15,7 +15,6 @@ export const DesignSection: React.FC<DesignSectionProps> = ({
   onOpenCMSForNewProject,
 }) => {
   const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const categories = [
     { id: 'all', label: '전체 (All)' },
@@ -25,7 +24,7 @@ export const DesignSection: React.FC<DesignSectionProps> = ({
     { id: 'poster', label: '포스터 디자인 (Poster)' },
   ];
 
-  const filteredProjects = filterProjects(designProjects, activeCategory, searchQuery);
+  const filteredProjects = filterProjects(designProjects, activeCategory);
 
   return (
     <section id="design" className="py-24 relative bg-[#060608] border-t-2 border-purple-500/20">
@@ -53,7 +52,7 @@ export const DesignSection: React.FC<DesignSectionProps> = ({
 
         </div>
 
-        {/* Filter Bar & Search */}
+        {/* Category Filter Bar */}
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 mb-10 pb-6 border-b border-white/10">
           {/* Category Tabs */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-none" role="tablist">
@@ -77,26 +76,6 @@ export const DesignSection: React.FC<DesignSectionProps> = ({
             })}
           </div>
 
-          {/* Search Input */}
-          <div className="relative min-w-[260px] max-w-md">
-            <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="프로젝트명, 툴(Photoshop 등) 검색..."
-              className="w-full pl-10 pr-4 py-2 rounded-xl bg-[#101016] border border-white/10 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-400 transition-colors"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-white"
-                aria-label="검색어 지우기"
-              >
-                지우기
-              </button>
-            )}
-          </div>
         </div>
 
         {/* Design Cards Grid */}
@@ -106,7 +85,6 @@ export const DesignSection: React.FC<DesignSectionProps> = ({
             <button
               onClick={() => {
                 setActiveCategory('all');
-                setSearchQuery('');
               }}
               className="text-xs font-semibold px-4 py-2 rounded-lg bg-white/5 border border-white/10 hover:border-white/20 text-white"
             >
