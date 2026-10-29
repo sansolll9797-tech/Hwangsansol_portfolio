@@ -14,7 +14,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ theme, profile }) =>
       period: '에이전시 실무',
       role: 'Marketing & Visual Design',
       org: '전문 마케팅 에이전시 (Marketing Agency)',
-      desc: '약 20여 개 병의원 전담 마케팅. 네이버 SEO 및 SNS 비주얼 브랜딩을 통해 잠재 환자의 신규 유입 및 상담 전환 파이프라인을 성공적으로 구축.',
+      desc: '20+ 병의원 전담 마케팅. 네이버 SEO 및 SNS 비주얼 브랜딩을 통해 잠재 환자의 신규 유입 및 상담 전환 파이프라인을 성공적으로 구축.',
     },
     {
       period: '디자인 외주 & 프로젝트',
