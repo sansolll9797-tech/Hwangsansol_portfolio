@@ -110,7 +110,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
             <div>
               <div className="text-xl font-bold text-white tracking-tight">20+ 병의원</div>
-              <div className="text-xs text-slate-400 font-medium">약 20여 개 병의원 전담 마케팅</div>
+              <div className="text-xs text-slate-400 font-medium">20+ 병의원 전담 마케팅</div>
             </div>
           </div>
 
