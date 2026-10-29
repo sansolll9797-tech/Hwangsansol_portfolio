@@ -69,7 +69,7 @@ export const DEFAULT_MARKETING_PROJECTS: Project[] = [
     challenge: '단순 의료 광고에 대한 환자의 피로도가 높고 경쟁이 치열한 의료 시장에서, 단순 클릭을 넘어 실제 문의와 방문으로 연결하기 위한 신뢰 형성이 핵심 과제였습니다.',
     solution: '환자의 궁금증을 명쾌하게 해소하는 맞춤형 의료 정보 콘텐츠를 기획하여 전문성과 진정성을 확보하고, 블로그와 SNS를 유기적으로 연계하는 마찰 없는 전환 동선을 설계했습니다.',
     keyMetric: '전담 병의원 20+ 신규 유입 체계 구축',
-    metricDetail: '타겟 키워드 검색 상위 노출 다수 점유 · 블로그 포스팅 약 1000건 이상 발행',
+    metricDetail: '타겟 키워드 검색 상위 노출 다수 점유 · 블로그 포스팅 1,000+ 발행',
     contribution: '블로그 콘텐츠 기획 100% · SNS 비주얼 디자인 100% · 신규 환자 유입 퍼널 설계 100%',
     tools: ['네이버 브랜드 블로그', 'Instagram', '키워드 검색량 분석', 'Photoshop', 'Illustrator'],
     date: '병원 마케팅 실무 프로젝트',
@@ -258,9 +258,9 @@ export const DEFAULT_METRICS: MarketingMetric[] = [
   {
     id: 'met-3',
     label: '블로그 콘텐츠 발행 실적',
-    value: '블로그 포스팅\n약 1000건 이상',
+    value: '블로그 포스팅\n1,000+',
     growth: '콘텐츠 파이프라인 구축',
-    description: '병원별 질환·시술 정보성 칼럼 및 네이버 상위 노출 포스팅 약 1000건 이상 발행',
+    description: '병원별 질환·시술 정보성 칼럼 및 네이버 상위 노출 포스팅 1,000+ 발행',
     category: 'Content Output',
     benchmark: '고품질 콘텐츠 기획'
   },
