@@ -462,9 +462,23 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                 <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: 'var(--accent-color)' }} />
                 Creative Execution & Solution (디자인 및 마케팅 솔루션)
               </h4>
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed bg-[#111116] p-4 rounded-xl border border-white/5">
-                {project.description || project.solution}
-              </p>
+              {project.section === 'design' ? (
+                <div className="text-sm sm:text-base text-slate-300 leading-relaxed bg-[#111116] p-4 rounded-xl border border-white/5 space-y-4">
+                  {(project.description || project.solution)
+                    .split(/(?<=\.)\s+/)
+                    .map((sentence) => sentence.trim())
+                    .filter(Boolean)
+                    .map((sentence, index) => (
+                      <p key={index} className="pl-4 -indent-4">
+                        {'- '}{sentence}
+                      </p>
+                    ))}
+                </div>
+              ) : (
+                <p className="text-sm sm:text-base text-slate-300 leading-relaxed bg-[#111116] p-4 rounded-xl border border-white/5">
+                  {project.description || project.solution}
+                </p>
+              )}
             </div>
           </div>
 
