@@ -5,8 +5,8 @@ export const DEFAULT_THEME: ThemeConfig = {
   headlineScale: 'impact',
   heroBadgeText: 'MARKETER & DESIGNER PORTFOLIO',
   heroHeadline: '황산솔 마케팅 및 디자이너 포트폴리오',
-  heroSubheadline: '약 20여 개 병의원 전담 마케팅을 통한 블로그·SNS 신규 유입 실무와, AI 영상·브랜드·그래픽·포스터 비주얼 디자인을 아우르는 황산솔의 포트폴리오입니다.',
-  aboutPhilosophy: '마케팅은 고객의 신뢰를 얻어 실제 행동을 유도하고, 디자인은 그 가치를 가장 매력적인 형태로 완성합니다. 전문 에이전시에서 약 20여 개 병의원을 전담하며 검색부터 상담, 최종 신규 유입까지 이어지는 전환 구조를 직접 기획하고 실행했습니다. 이 검증된 마케팅 실무 감각과 감각적인 비주얼 디자인 역량으로 브랜드의 실질적인 가치를 만듭니다.',
+  heroSubheadline: '20+ 병의원 전담 마케팅을 통한 블로그·SNS 신규 유입 실무와, AI 영상·브랜드·그래픽·포스터 비주얼 디자인을 아우르는 황산솔의 포트폴리오입니다.',
+  aboutPhilosophy: '마케팅은 고객의 신뢰를 얻어 실제 행동을 유도하고, 디자인은 그 가치를 가장 매력적인 형태로 완성합니다. 전문 에이전시에서 20+ 병의원을 전담하며 검색부터 상담, 최종 신규 유입까지 이어지는 전환 구조를 직접 기획하고 실행했습니다. 이 검증된 마케팅 실무 감각과 감각적인 비주얼 디자인 역량으로 브랜드의 실질적인 가치를 만듭니다.',
   statusBadge: '새로운 프로젝트 협업 및 제안 환영 (Available for Collab)',
 };
 
@@ -28,7 +28,7 @@ export const DEFAULT_PROFILE: ProfileInfo = {
 
 export const DEFAULT_SEO: SEOConfig = {
   title: '황산솔 마케팅 및 디자이너 포트폴리오 | Hwang Sansol Portfolio',
-  description: '약 20여 개 병의원의 신규 유입을 이끌어낸 마케터이자 브랜드·그래픽·포스터·AI 영상 디자이너 황산솔의 포트폴리오',
+  description: '20+ 병의원의 신규 유입을 이끌어낸 마케터이자 브랜드·그래픽·포스터·AI 영상 디자이너 황산솔의 포트폴리오',
   keywords: '황산솔, 황산솔 포트폴리오, 마케팅 포트폴리오, 디자이너 포트폴리오, 네이버 블로그 마케팅, 인스타그램 마케팅, 브랜드 디자인, 그래픽 디자인, 포스터 디자인, AI 영상 디자인',
   ogImage: '/assets/pdf-pages/page-04.png',
 };
@@ -57,14 +57,14 @@ export function extractYouTubeId(url?: string): string | null {
 export const DEFAULT_MARKETING_PROJECTS: Project[] = [
   {
     id: 'proj-medical-mkt',
-    title: '20여 개 병원 전담 마케팅 & 신규 환자 유입 파이프라인',
-    subtitle: '네이버 블로그 검색 SEO와 인스타그램 비주얼 브랜딩을 결합하여 약 20여 개 병의원의 신규 환자(초진) 유입 파이프라인 구축',
+    title: '20+ 병원 전담 마케팅 & 신규 환자 유입 파이프라인',
+    subtitle: '네이버 블로그 검색 SEO와 인스타그램 비주얼 브랜딩을 결합하여 20+ 병의원의 신규 환자(초진) 유입 파이프라인 구축',
     category: 'marketing',
     categoryLabel: '블로그 & SNS 마케팅',
     section: 'marketing',
     thumbnail: '/assets/pdf-pages/page-11.png',
     heroImage: '/assets/pdf-pages/page-11.png',
-    summary: '전문 마케팅 에이전시에서 약 20여 개 병의원을 전담하며, 정보성 블로그 칼럼과 SNS 브랜딩으로 신규 환자 유입 체계를 완성했습니다.',
+    summary: '전문 마케팅 에이전시에서 20+ 병의원을 전담하며, 정보성 블로그 칼럼과 SNS 브랜딩으로 신규 환자 유입 체계를 완성했습니다.',
     description: '환자가 겪는 실제 질환 고민과 시술 니즈를 해결하는 타겟 키워드를 발굴하여 정기적인 전문 칼럼을 기획하고 네이버 검색 상위 노출을 점유했습니다. 동시에 인스타그램을 통해 병원의 신뢰도와 차별화 포인트를 세련된 카드뉴스와 비주얼 에셋으로 디자인하여 긍정적인 브랜드 이미지를 극대화했습니다. 이를 통해 [포털 검색 ➔ 정보성 칼럼 탐독 및 신뢰 형성 ➔ 상담 및 예약 문의 ➔ 신규 환자(초진) 내원]으로 이어지는 마찰 없는 신규 유입 프로세스를 정착시켰습니다.',
     challenge: '단순 의료 광고에 대한 환자의 피로도가 높고 경쟁이 치열한 의료 시장에서, 단순 클릭을 넘어 실제 문의와 방문으로 연결하기 위한 신뢰 형성이 핵심 과제였습니다.',
     solution: '환자의 궁금증을 명쾌하게 해소하는 맞춤형 의료 정보 콘텐츠를 기획하여 전문성과 진정성을 확보하고, 블로그와 SNS를 유기적으로 연계하는 마찰 없는 전환 동선을 설계했습니다.',
@@ -241,8 +241,8 @@ export const DEFAULT_METRICS: MarketingMetric[] = [
     id: 'met-1',
     label: '전담 병·의원 (Clients)',
     value: '20+ 병의원',
-    growth: '약 20여 개 병의원 전담 마케팅',
-    description: '약 20여 개 병의원 블로그 및 SNS 마케팅 채널 전담 관리',
+    growth: '20+ 병의원 전담 마케팅',
+    description: '20+ 병의원 블로그 및 SNS 마케팅 채널 전담 관리',
     category: 'Client Scale',
     benchmark: '안정적인 전담 관리'
   },
