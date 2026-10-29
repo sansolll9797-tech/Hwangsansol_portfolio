@@ -120,7 +120,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                 />
                 
                 {/* Impact Metric Floating Badge */}
-                {project.keyMetric && (
+                {project.keyMetric && project.id !== 'proj-medical-mkt' && (
                   <div className="absolute bottom-4 left-4 right-4 sm:right-auto flex items-center gap-3 p-3.5 rounded-xl bg-black/85 border border-white/20 backdrop-blur-md">
                     <div className="p-2 rounded-lg bg-white/10 shrink-0">
                       <TrendingUp className="w-4 h-4" style={{ color: 'var(--accent-color)' }} />
