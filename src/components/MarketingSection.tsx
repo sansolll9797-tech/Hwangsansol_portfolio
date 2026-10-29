@@ -29,7 +29,7 @@ export const MarketingSection: React.FC<MarketingSectionProps> = ({
             <span>SECTION 01 — MARKETING IMPACT</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 leading-tight sm:leading-[1.25]">
-            20여 개 병원 전담 마케팅 & <br className="hidden sm:inline" />
+            20+ 병원 전담 마케팅 & <br className="hidden sm:inline" />
             <span style={{ color: 'var(--accent-color)' }}>신규 환자 유입 파이프라인</span>
           </h2>
           <p className="text-sm sm:text-base text-slate-400 max-w-3xl leading-relaxed">
