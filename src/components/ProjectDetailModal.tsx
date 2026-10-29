@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { X, ExternalLink, TrendingUp, Sparkles, Palette, Layers, Calendar, User, Film } from 'lucide-react';
+import { X, ExternalLink, Sparkles, Palette, Layers, Calendar, User, Film } from 'lucide-react';
 import { Project } from '../types/portfolio';
 import { extractYouTubeId } from '../utils/portfolio-data';
 
@@ -119,22 +119,6 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
                   className="w-full h-full object-contain sm:object-cover"
                 />
                 
-                {/* Impact Metric Floating Badge */}
-                {project.keyMetric && project.id !== 'proj-medical-mkt' && (
-                  <div className="absolute bottom-4 left-4 right-4 sm:right-auto flex items-center gap-3 p-3.5 rounded-xl bg-black/85 border border-white/20 backdrop-blur-md">
-                    <div className="p-2 rounded-lg bg-white/10 shrink-0">
-                      <TrendingUp className="w-4 h-4" style={{ color: 'var(--accent-color)' }} />
-                    </div>
-                    <div>
-                      <div className="text-sm sm:text-base font-bold text-white">
-                        {project.keyMetric}
-                      </div>
-                      {project.metricDetail && (
-                        <div className="text-xs text-slate-300">{project.metricDetail}</div>
-                      )}
-                    </div>
-                  </div>
-                )}
               </div>
             )}
 
