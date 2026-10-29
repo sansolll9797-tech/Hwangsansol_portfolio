@@ -91,7 +91,7 @@ export const MarketingSection: React.FC<MarketingSectionProps> = ({
                     </div>
                     <div>
                       <span className="text-slate-400 block mb-0.5">핵심 전략</span>
-                      <span className="text-emerald-400 font-semibold">검색 상위 노출 + 신규 유입 파이프라인</span>
+                      <span className="text-emerald-400 font-semibold">네이버 상위 노출 + 신규 유입 파이프라인</span>
                     </div>
                   </div>
 
