@@ -180,16 +180,9 @@ export const DEFAULT_DESIGN_PROJECTS: Project[] = [
     category: 'detail',
     categoryLabel: '상세페이지 디자인 (Detail Page)',
     section: 'design',
-    thumbnail: '/assets/legal-office/law-office-cover.jpg',
-    heroImage: '/assets/legal-office/law-office-overview.jpg',
-    galleryImages: [
-      '/assets/legal-office/law-office-overview.jpg',
-      '/assets/legal-office/law-office-page-01.png',
-      '/assets/legal-office/law-office-page-02.png',
-      '/assets/legal-office/law-office-page-03.png',
-      '/assets/legal-office/law-office-page-04.png',
-      '/assets/legal-office/law-office-page-05.png',
-    ],
+    thumbnail: '/assets/law-office-cover.jpg',
+    heroImage: '/assets/law-office-cover.jpg',
+    galleryImages: ['/assets/law-office-cover.jpg'],
     summary: '법률 서비스의 전문성을 효과적으로 전달하기 위한 네이버 블로그 홍보 콘텐츠입니다. 핵심 정보와 상담 안내를 체계적으로 배치하여 고객 문의를 유도하도록 설계했습니다.',
     description: '법률사무소의 전문성과 신뢰도를 전달할 수 있도록 딥 네이비와 골드 컬러를 중심으로 비주얼을 구성했습니다. 핵심 정보와 상담 안내를 위계적으로 배치해 긴 세로형 페이지에서도 내용을 자연스럽게 읽을 수 있도록 디자인했습니다. 타이포그래피의 대비와 구획별 레이아웃을 통해 정보 전달력과 가독성을 높였습니다.',
     challenge: '법률 관련 정보와 상담 안내를 긴 네이버 블로그 상세페이지에 담으면서도 브랜드의 전문성과 가독성을 함께 유지하는 것이 과제였습니다.',
@@ -360,8 +353,7 @@ export function loadSiteData(): SiteData {
       designProjects: Array.isArray(parsed.designProjects) && parsed.designProjects.length > 0
         ? (() => {
             const existing = parsed.designProjects.filter((p: Project) => p.id !== 'proj-law-office-detail');
-            const lawProject = parsed.designProjects.find((p: Project) => p.id === 'proj-law-office-detail')
-              || DEFAULT_DESIGN_PROJECTS.find((p: Project) => p.id === 'proj-law-office-detail')!;
+            const lawProject = DEFAULT_DESIGN_PROJECTS.find((p: Project) => p.id === 'proj-law-office-detail')!;
             return [...existing.slice(0, 4), lawProject, ...existing.slice(4)];
           })()
         : DEFAULT_DESIGN_PROJECTS,
