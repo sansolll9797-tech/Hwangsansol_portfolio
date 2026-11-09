@@ -22,6 +22,7 @@ export const DesignSection: React.FC<DesignSectionProps> = ({
     { id: 'brand', label: '브랜드 디자인 (Brand)' },
     { id: 'medical', label: '메디컬 디자인 (Medical)' },
     { id: 'poster', label: '포스터 디자인 (Poster)' },
+    { id: 'detail', label: '상세페이지 디자인 (Detail Page)' },
   ];
 
   const filteredProjects = filterProjects(designProjects, activeCategory);
@@ -46,7 +47,7 @@ export const DesignSection: React.FC<DesignSectionProps> = ({
               </span>
             </h2>
             <p className="mt-3 text-sm sm:text-base text-slate-400 max-w-2xl leading-relaxed">
-              AI 비주얼 영상 디자인(유튜브 연동), 캐주얼 커피바 통합 브랜딩(FRANK WAVE), 피부과 시술 정보성 카드뉴스, 병·의원 네이버 블로그 스킨, 어반브레이크 외주 웹 포스터 등 실무 및 프로젝트 작업물입니다.
+              AI 비주얼 영상 디자인(유튜브 연동), 캐주얼 커피바 통합 브랜딩(FRANK WAVE), 피부과 시술 정보성 카드뉴스, 병·의원 네이버 블로그 스킨, 어반브레이크 외주 웹 포스터, 법률사무소 네이버 블로그 상세페이지 등 실무 및 프로젝트 작업물입니다.
             </p>
           </div>
 
