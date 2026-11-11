@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, ArrowUp, ArrowUpRight, FileText, Image as ImageIcon } from 'lucide-react';
+import { Mail, ArrowUp, ArrowUpRight, Image as ImageIcon } from 'lucide-react';
 import { SocialLinks } from '../types/portfolio';
 
 interface ContactSectionProps {
@@ -37,34 +37,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 </span>
               </div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white">
-                이력서와 <span className="text-[#00FF66]">디자인 작업물</span> 보기
+                <span className="text-[#00FF66]">디자인 포트폴리오</span> 보기
               </h2>
             </div>
             <p className="max-w-xs text-sm text-slate-400 leading-relaxed md:text-right">
-              채용 검토에 필요한 이력서와 디자인 작업물을<br className="hidden sm:block" />
+              브랜드·그래픽·포스터 디자인 작업물을<br className="hidden sm:block" />
               PDF로 확인할 수 있습니다.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="이력서 PDF 새 탭에서 열기"
-              className="group flex items-center gap-4 rounded-[20px] border border-emerald-200/20 bg-[#0b1510]/95 px-5 py-5 sm:px-6 sm:py-6 transition-all duration-200 hover:-translate-y-1 hover:border-[#00FF66]/60 hover:bg-[#0e1c14] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00FF66]"
-            >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-emerald-500/30 bg-emerald-500/10 text-[#00FF66]">
-                <FileText className="h-6 w-6" aria-hidden="true" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="mb-0.5 text-[11px] font-mono font-semibold tracking-[0.12em] text-[#00FF66]">RESUME · PDF</div>
-                <h3 className="text-lg sm:text-xl font-bold text-white">이력서</h3>
-                <p className="mt-1 text-xs text-slate-400">경력 · 역량 · 자격증</p>
-              </div>
-              <ArrowUpRight className="h-6 w-6 shrink-0 text-[#00FF66] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
-            </a>
-
+          <div className="grid grid-cols-1 gap-4">
             <a
               href="/design-portfolio.pdf"
               target="_blank"
